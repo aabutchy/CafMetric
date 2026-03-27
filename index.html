@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CafMetric — Caffeine Testing for Cardiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #FAFAF8;
+    --color-text: #1A1A18;
+    --color-text-secondary: #6B6B63;
+    --color-accent: #8B3A3A;
+    --color-accent-light: #C4726F;
+    --color-border: #E2E0DB;
+    --color-card: #FFFFFF;
+    --color-section-alt: #F3F2EF;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Manrope', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.7;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 250, 248, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  nav.scrolled {
+    border-bottom-color: var(--color-border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-accent);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 58, 58, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    max-width: 800px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    max-width: 520px;
+    margin-top: 2rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-line {
+    width: 1px;
+    height: 80px;
+    background: var(--color-border);
+    margin-top: 4rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 7rem 3rem;
+  }
+
+  .section-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--color-section-alt);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .about-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 0.5rem;
+  }
+
+  .detail-item {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--color-accent-light);
+  }
+
+  .detail-item h4 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+  }
+
+  .detail-item p {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* TEAM */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .team-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    padding: 2.5rem 2rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .team-card:hover {
+    border-color: var(--color-accent-light);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+  }
+
+  .team-card-initials {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--color-section-alt);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .team-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .team-card .role {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .team-card p {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  /* CONTACT */
+  .contact {
+    background: var(--color-section-alt);
+  }
+
+  .contact-inner {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-inner p {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-email {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--color-accent-light);
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+
+  .contact-email:hover {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .nav-links a { font-size: 0.7rem; }
+    section { padding: 5rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .team-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    nav { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">CafMetric</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-tag">Diagnostic Innovation</p>
+  <h1>Clarity before the <em>heartbeat</em></h1>
+  <p class="hero-sub">A rapid, binary caffeine test designed for cardiologists — so cardiac stress testing can proceed with confidence.</p>
+  <div class="hero-line"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner reveal">
+    <p class="section-label">About CafMetric</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-heading">A simple answer to a critical question</h2>
+        <p>Caffeine interferes with cardiac stress testing — but until now, there hasn't been a fast, definitive way to know if a patient's caffeine levels are safe to proceed. CafMetric changes that.</p>
+        <p>We're building a rapid point-of-care test that gives cardiologists a clear yes-or-no answer on blood caffeine concentration, eliminating guesswork, reducing rescheduled procedures, and improving the reliability of diagnostic results.</p>
+      </div>
+      <div class="about-details">
+        <div class="detail-item">
+          <h4>Binary Result</h4>
+          <p>A clear yes or no — no interpretation needed. Safe to test, or reschedule with certainty.</p>
+        </div>
+        <div class="detail-item">
+          <h4>Point-of-Care</h4>
+          <p>Designed for use in the cardiology office, right before the procedure.</p>
+        </div>
+        <div class="detail-item">
+          <h4>Clinical Confidence</h4>
+          <p>Removes a common source of ambiguity in cardiac stress testing workflows.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-inner reveal">
+    <p class="section-label">Our Team</p>
+    <h2 class="section-heading">Built by clinicians and engineers</h2>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-card-initials">VC</div>
+        <h3>Dr. Veronica Covalesky</h3>
+        <p class="role">Clinical Advisor</p>
+        <p>Board-certified cardiologist with over 35 years in non-invasive and nuclear cardiology. Associate Faculty at Thomas Jefferson University and Partner at Cardiology Consultants of Philadelphia. Deeply committed to bridging clinical practice with emerging diagnostic technologies including AI-driven ECG analysis.</p>
+      </div>
+
+      <div class="team-card">
+        <div class="team-card-initials">GM</div>
+        <h3>Dr. Gary Mintz</h3>
+        <p class="role">Senior Medical Advisor</p>
+        <p>Senior Medical Advisor at the Cardiovascular Research Foundation and Director of TCT. Author of approximately 1,000 peer-reviewed articles and four textbooks on intravascular imaging. Recipient of the Master of the Masters Career Achievement Award at TCTAP.</p>
+      </div>
+
+      <div class="team-card">
+        <div class="team-card-initials">AB</div>
+        <h3>Dr. Adam Butchy</h3>
+        <p class="role">Chief Engineer</p>
+        <p>Biomedical engineer and co-founder with a background in chemical engineering and biochemistry from Villanova University. Completed five successful FDA submissions and received Breakthrough Designation for a cardiac diagnostic product. Balances product development with regulatory strategy.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner reveal">
+    <div class="contact-inner">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="section-heading">Let's talk</h2>
+      <p>Interested in learning more about CafMetric, exploring a partnership, or joining our mission? We'd love to hear from you.</p>
+      <a href="mailto:cafeinemetric@gmail.com" class="contact-email">cafeinemetric@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2026 CafMetric. All rights reserved.
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
